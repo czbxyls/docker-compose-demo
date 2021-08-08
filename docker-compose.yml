@@ -1,0 +1,39 @@
+# Use root/example as user/password credentials
+version: '3.1'
+
+services:
+   mysql:
+    container_name: mysql-latest
+    image: mysql
+    ports:
+      - "3306:3306"
+    command: --default-authentication-plugin=mysql_native_password --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci --skip-character-set-client-handshake
+    #Do not ignore character set information sent by the client. To ignore client information and use the default server character set, 
+    #use --skip-character-set-client-handshake;
+    environment:
+      - MYSQL_ROOT_PASSWORD=123456&
+    #MYSQL_ROOT_PASSWORD 是设置mysql的登录密码，我们进入容器后登录mysql就得用这个密码
+    volumes:
+      - ./mysql/data:/var/lib/mysql
+    #volumes 挂载把容器里面的 /var/lib/mysql 目录挂载到本地的data目录下
+    restart: always
+    
+  nacos:
+    image: nacos/nacos-server
+    container_name: nacos-standalone-mysql
+    env_file:
+      - ./nacos/nacos-docker/env/nacos-standlone-mysql.env
+    volumes:
+      - ./nacos/standalone-logs/:/home/nacos/logs
+      - ./nacos/init.d/custom.properties:/home/nacos/init.d/custom.properties
+    ports:
+      - "8848:8848"
+      - "9848:9848"
+      - "9555:9555"
+    restart: always
+    environment:                       
+      - JVM_XMS=128m
+      - JVM_XMX=128m
+      - JVM_XMN=50m
+    depends_on:
+      - mysql
