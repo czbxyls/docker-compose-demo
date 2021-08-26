@@ -1,0 +1,3 @@
+###ignore data
+/mysql/data/*
+/nacos/standalone-logs
