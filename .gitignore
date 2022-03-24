@@ -1,3 +1,4 @@
 ###ignore data
 /mysql/data/*
 /nacos/standalone-logs
+.DS_Store

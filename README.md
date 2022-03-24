@@ -21,4 +21,4 @@ flush privileges;
 
 5. 重启服务
 docker-compose -f docker-compose.yml down & docker-compose -f docker-compose.yml up
-6. 访问： http://localhost:8848
+6. 访问： http://localhost:8848/nacos
